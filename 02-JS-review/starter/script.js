@@ -142,12 +142,122 @@ function getBooks() {
 function getBook(id) {
   return data.find((d) => d.id === id);
 }
-
+/*
 //Destructuring
-const book = getBook(2);
+const book = getBook(1);
 
 const { title, author, genres, pages, publicationDate, hasMovieAdaptation } =
   book;
 
-const [primaryGenre, secondaryGenre] = genres;
-primaryGenre;
+const [primaryGenre, secondaryGenre, ...other] = genres;
+other;
+
+//rest/spread operator
+const newGenres = [...genres, "newGenre"];
+
+const updatedBook = {
+  ...book,
+  moviePublicationDate: "2001-12-19",
+  movieRating: 8.8,
+};
+
+//template literals
+const summary = `${title} is a book`;
+summary;
+
+//ternary operator instead of if/else
+const pageRange = pages > 1000 ? "over 1000 pages" : "less than 1000 pages";
+
+//arrow functions
+const getYear = (str) => str.split("-")[0];
+console.log(getYear(publicationDate));
+*/
+
+//.map - run a function on each element of an array and return a new array
+
+/*
+const books = getBooks();
+
+const titles = books.map((book) => book.title);
+titles;
+
+const essentialData = books.map((book) => {
+  return {
+    title: book.title,
+    author: book.author,
+  };
+});
+
+//.filter - create a new array with elements that pass a test (filter out elements)
+
+const longBooksWithMovieAdaptation = books
+  .filter((book) => book.pages > 500)
+  .filter((book) => book.hasMovieAdaptation);
+longBooksWithMovieAdaptation;
+
+//.reduce - reduce an array to a single value (e.g., sum, average)
+
+const totalPages = books.reduce((acc, book) => acc + book.pages, 0);
+totalPages;
+
+//.sort - sort an array based on a property, this one affects the original array
+
+const sortedBooks = books.slice().sort((a, b) => a.pages - b.pages);
+sortedBooks;
+
+//immutable array
+//1. add a book
+
+const newBook = {
+  id: 6,
+  title: "The Hitchhiker's Guide to the Galaxy",
+  author: "Douglas Adams",
+  publicationDate: "1979-10-12",
+};
+const booksAfterAdd = [...books, newBook];
+
+//2. remove a book
+const booksAfterRemove = books.filter((book) => book.id !== 2);
+booksAfterRemove;
+
+//reindex the books
+booksAfterRemove.map((book, i) => {
+  book.id = ++i;
+  return book;
+});
+booksAfterRemove;
+*/
+
+/*
+//async promises
+fetch("https://jsonplaceholder.typicode.com/posts")
+  .then((response) => {
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    return response.json();
+  })
+  .then((data) => {
+    console.log(data);
+  })
+  .catch((error) => {
+    console.error("There was a problem with the fetch operation:", error);
+  });
+
+*/
+
+//async/await
+async function fetchPosts() {
+  try {
+    const response = await fetch("https://jsonplaceholder.typicode.com/posts");
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    const data = await response.json();
+    console.log(data);
+  } catch (error) {
+    console.error("There was a problem with the fetch operation:", error);
+  }
+}
+
+fetchPosts;
