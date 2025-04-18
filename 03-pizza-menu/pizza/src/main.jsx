@@ -67,24 +67,33 @@ function Header() {
 
 function Menu() {
   return (
-    <div className="menu">
+    <main className="menu">
       <h2>Our Menu</h2>
-      {pizzaData.map((pizza) => {
-        return <Pizza key={pizza.name} data={pizza} />;
-      })}
-    </div>
+      {pizzaData.length > 0 ? (
+        <>
+          <p>Pizza made with love</p>
+          <ul className="pizzas">
+            {pizzaData.map((pizza) => {
+              return <Pizza key={pizza.name} data={pizza} />;
+            })}
+          </ul>
+        </>
+      ) : (
+        <p>No menu, rough...</p>
+      )}
+    </main>
   );
 }
 
 function Pizza(props) {
-  const pizzaData = props.data;
+  const pizzaList = props.data;
   return (
-    <div className="pizza">
-      <img src={pizzaData.photoName} alt={pizzaData.name} />
+    <div className={`pizza ${pizzaList.soldOut ? "sold-out" : ""}`}>
+      <img src={pizzaList.photoName} alt={pizzaList.name} />
       <div>
-        <h3>{pizzaData.name}</h3>
-        <p>{pizzaData.ingredients}</p>
-        <span>{pizzaData.price} $</span>
+        <h3>{pizzaList.name}</h3>
+        <p>{pizzaList.ingredients}</p>
+        <span>{pizzaList.soldOut ? "SOLD OUT" : pizzaList.price + "$"}</span>
       </div>
     </div>
   );
@@ -94,11 +103,8 @@ function Footer() {
   const hour = new Date().getHours();
 
   return (
-    <footer>
-      {new Date().toLocaleTimeString()}
+    <footer className="footer">
       <p>{hour >= 8 && hour < 22 ? "We're open!" : "We're closed!"}</p>
-      <p>All rights reserved</p>
-      <p>Copyright 2023</p>
     </footer>
   );
 }
