@@ -12,7 +12,7 @@ function App() {
   const [isMax, setIsMax] = useState(false);
 
   function handlePrevious() {
-    setStep(step - 1);
+    setStep((s) => s - 1);
     setIsMax(false);
     console.log(step);
     if (step == 2) {
@@ -21,7 +21,7 @@ function App() {
   }
 
   function handleNext() {
-    setStep(step + 1);
+    setStep((s) => s + 1);
     setIsMin(false);
     console.log(step);
     if (step === messages.length - 1) {
