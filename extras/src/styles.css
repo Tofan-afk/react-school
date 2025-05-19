@@ -32,34 +32,3 @@ div.selected {
   color: #fff;
   font-weight: bold;
 }
-
-.flashcard .question,
-.flashcard .answer {
-  transition: opacity 0.4s, max-height 0.4s;
-  overflow: hidden;
-  margin: 0;
-}
-
-.flashcard .question.show {
-  opacity: 1;
-  max-height: 100px;
-  pointer-events: auto;
-}
-
-.flashcard .question.hide {
-  opacity: 0;
-  max-height: 0;
-  pointer-events: none;
-}
-
-.flashcard .answer.show {
-  opacity: 1;
-  max-height: 100px;
-  pointer-events: auto;
-}
-
-.flashcard .answer.hide {
-  opacity: 0;
-  max-height: 0;
-  pointer-events: none;
-}

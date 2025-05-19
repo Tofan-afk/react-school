@@ -1,12 +1,10 @@
-import { useState } from "react";
-import "./index.css";
+import { useState } from "react/cjs/react.production.min";
+import "./styles.css";
 
 export default function App() {
   return (
-    <div className="flashcards">
-      {questions.map((question) => (
-        <FlashCards question={question} />
-      ))}
+    <div className="App, flashcards">
+      <FlashCards question={questions} />
     </div>
   );
 }
@@ -45,22 +43,22 @@ const questions = [
   },
 ];
 
-function FlashCards({ question }) {
-  const [selected, selectedTogg] = useState(false);
+function FlashCards(props) {
+  const [selected, selectedTogg] = useState(true);
   return (
-    <div
-      className={`flashcard ${selected ? "selected" : ""}`}
-      key={question.id}
-      onClick={() => {
-        selectedTogg((init) => !init);
-      }}
-    >
-      <h2 className={`question ${selected ? "hide" : "show"}`}>
-        {question.question}
-      </h2>
-      <p className={`answer ${selected ? "show" : "hide"}`}>
-        {question.answer}
-      </p>
-    </div>
+    <>
+      {props.question.map((question) => (
+        <div
+          className={selected ? "selected" : ""}
+          key={question.id}
+          onClick={() => {
+            selectedTogg((init) => !init);
+          }}
+        >
+          <h2>{question.question}</h2>
+          <p>{question.answer}</p>
+        </div>
+      ))}
+    </>
   );
 }
