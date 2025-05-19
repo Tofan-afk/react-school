@@ -1,17 +1,14 @@
 import { useState } from "react";
 
 function App() {
-  const [initialItems, setInitialItems] = useState([]);
+  const [totalItems, setItems] = useState([]);
 
   return (
     <div className="app">
       <Header />
-      <Form setInitialItems={setInitialItems} />
-      <PackingList
-        initialItems={initialItems}
-        setInitialItems={setInitialItems}
-      />
-      <Stats />
+      <Form setItems={setItems} />
+      <PackingList totalItems={totalItems} setItems={setItems} />
+      <Stats totalItems={totalItems} />
     </div>
   );
 }
@@ -20,7 +17,7 @@ function Header() {
   return <h1>🌴Far Away💼</h1>;
 }
 
-function Form({ setInitialItems }) {
+function Form({ setItems }) {
   function handleSubmit(event) {
     event.preventDefault();
     const form = event.target;
@@ -39,7 +36,7 @@ function Form({ setInitialItems }) {
       packed: false,
     };
 
-    setInitialItems((prevItems) => [...prevItems, newItem]);
+    setItems((prevItems) => [...prevItems, newItem]);
     form.reset();
   }
 
@@ -59,31 +56,50 @@ function Form({ setInitialItems }) {
   );
 }
 
-function Stats() {
+function Stats({ totalItems }) {
   return (
     <footer className="stats">
-      You have X items on your list, and you already packed Y of them.
+      You have {totalItems.length} items on your list, and you already packed{" "}
+      {totalItems.filter((item) => item.packed).length} of them.
     </footer>
   );
 }
 
-function PackingList({ initialItems, setInitialItems }) {
+function PackingList({ totalItems, setItems }) {
   function handleDelete(id) {
-    setInitialItems((prevItems) => prevItems.filter((item) => item.id !== id));
+    setItems((prevItems) => prevItems.filter((item) => item.id !== id));
   }
 
   function togglePacked(id) {
-    setInitialItems((prevItems) =>
+    setItems((prevItems) =>
       prevItems.map((item) =>
         item.id === id ? { ...item, packed: !item.packed } : item
       )
     );
   }
 
+  const [sortBy, setSortBy] = useState("packed");
+
+  let sortedItems = [...totalItems];
+  if (sortBy === "description") {
+    sortedItems.sort((a, b) => a.description.localeCompare(b.description));
+  } else if (sortBy === "packed") {
+    // Sort by putting alphabetically packed items first and the rest also alphabetically
+    sortedItems.sort((a, b) => {
+      if (a.packed === b.packed) {
+        return a.description.localeCompare(b.description);
+      }
+      return a.packed ? -1 : 1;
+    });
+    sortedItems.sort;
+  } else {
+    sortedItems.sort((a, b) => a.id - b.id);
+  }
+
   return (
     <div className="list">
       <ul>
-        {initialItems.map((item) => (
+        {sortedItems.map((item) => (
           <Item
             key={item.id}
             data={item}
@@ -92,6 +108,14 @@ function PackingList({ initialItems, setInitialItems }) {
           />
         ))}
       </ul>
+      <div className="actions">
+        <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+          <option value="input">Sort by input</option>
+          <option value="description">Sort by description</option>
+          <option value="packed">Sort by packed status</option>
+        </select>
+        <button onClick={() => setItems([])}>Clear List</button>
+      </div>
     </div>
   );
 }
