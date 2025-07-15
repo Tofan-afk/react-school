@@ -1,5 +1,6 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
+
 StarRating.propTypes = {
   maxRating: PropTypes.number,
   color: PropTypes.string,
@@ -22,6 +23,7 @@ export default function StarRating({
   color = "#fcc419",
   size = 48,
   defaultRating = 0,
+  onSetRating = () => {},
 }) {
   const [rating, setRating] = useState(defaultRating);
   const [tempRating, setTempRating] = useState(0);
@@ -39,7 +41,10 @@ export default function StarRating({
         {Array.from({ length: maxRating }, (_, index) => (
           <Star
             key={index}
-            onClick={() => setRating(index + 1)}
+            onClick={() => {
+              setRating(index + 1);
+              onSetRating(index + 1);
+            }}
             onHoverIn={() => setTempRating(index + 1)}
             onHoverOut={() => setTempRating(0)}
             full={tempRating ? tempRating >= index + 1 : rating >= index + 1}
@@ -96,15 +101,3 @@ function Star({ onClick, full, onHoverIn, onHoverOut, color, size }) {
     </span>
   );
 }
-
-/*
-FULL STAR
-
-
-
-
-EMPTY STAR
-
-
-
-*/
